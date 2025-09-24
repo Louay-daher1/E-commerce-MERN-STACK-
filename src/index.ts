@@ -3,6 +3,8 @@ import mongoose from "mongoose"
 import userRoute from "./routes/userRoute.js"
 import { seedInitialProducts } from "./services/productService.js";
 import productRoute from "./routes/productRoute.js"
+import cartRoute from "./routes/cartRoute.js"
+
 const app=express();
 const port=3000;
 
@@ -15,6 +17,7 @@ mongoose.connect('mongodb://localhost:27017/Ecommerce2').then(
 ).catch((err)=>{
     console.log("Error connecting to mongodb",err)
 });
+app.use('/cart',cartRoute);
 app.use('/user',userRoute);
 app.use('/product',productRoute);
 app.get('/', (request, response) => {
