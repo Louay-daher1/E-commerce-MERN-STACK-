@@ -1,16 +1,20 @@
 import express, { type Request } from 'express'
-import { getActiveCartForUser } from '../services/cartService.js';
+import { addItemToCart, getActiveCartForUser } from '../services/cartService.js';
 import validateJWT from '../middlewares/validateJWT.js';
+import type { ExtendRequest } from '../types/extendedRequest.js';
 
 const router=express.Router();
-interface ExtendReques extends Request{
-    user?:any;
-}
-router.get('/',validateJWT,async(req:ExtendReques,res)=>{
+
+router.get('/',validateJWT,async(req:ExtendRequest,res)=>{
     // get active cart for user
     const userId=req.user._id;
     const cart=await getActiveCartForUser({userId:userId})
     res.status(200).send(cart);
 })
-
+router.post('/items',validateJWT,async (req:ExtendRequest,res)=>{
+const userId=req?.user?._id;
+const {productId,quantity}=req.body
+const response= await addItemToCart({userId,productId,quantity})
+res.status(response.statusCode).send(response.data)
+})
 export default router;
