@@ -35,6 +35,6 @@ const loginUser=async({email,password}:loginUser)=>{
     return {data:"Incorrect email or password",statusCode:400}
 }
 const generateJwt=(data:any)=>{
-return jwt.sign(data,'XAV5lrINXwfAWNdVwKOwGJ4RazdhYlnUOL2i05jcnTA=') // data,secret key when i get the jwt i encode it with the secret key to assur this is my secret key and i can add {expiresIn:'24h'}to expire this token
+return jwt.sign(data,process.env.JWT_SECRET||'') // data,secret key when i get the jwt i encode it with the secret key to assur this is my secret key and i can add {expiresIn:'24h'}to expire this token
 }
 export { registerUser, loginUser };

@@ -4,6 +4,7 @@ export const getAllProducts=async ()=>{
     return await productModel.find();
 }
 export const seedInitialProducts=async ()=>{
+  try{
     const products = [
         {
           title: "Wireless Headphones",
@@ -23,5 +24,8 @@ export const seedInitialProducts=async ()=>{
        if (existingProducts.length===0){
         await productModel.insertMany(products);
        }
+  }catch(err){
+    console.error("Cannot see database",err)
+  }
 }
 
