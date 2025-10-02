@@ -7,16 +7,22 @@ export const seedInitialProducts=async ()=>{
   try{
     const products = [
         {
-          title: "Wireless Headphones",
-          image: "https://picsum.photos/seed/headphones/400/300",
+          title: "Dell Laptop",
+          image: "https://tse2.mm.bing.net/th/id/OIP.xwYV4w8bzm1kj-sFwDw4KwHaEc?rs=1&pid=ImgDetMain&o=7&rm=3",
           price: 120,
           stock: 80,
         },
         {
-          title: "Smart Watch",
-          image: "https://picsum.photos/seed/watch/400/300",
+          title: "Assus Laptop",
+          image: "https://tse1.mm.bing.net/th/id/OIP.q6YmIA-h_zO2RPSgmopKHgHaGF?rs=1&pid=ImgDetMain&o=7&rm=3",
           price: 150,
           stock: 95,
+        },
+        {
+          title: "HP Laptop",
+          image: "https://th.bing.com/th/id/OIP.g-_DZCSZ_jSSYSmgz3pIjAHaFj?o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3",
+          price: 190,
+          stock: 80,
         },
         
       ];
