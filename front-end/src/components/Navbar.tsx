@@ -18,7 +18,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 function Navbar() {
-  const {username,token,isAuthenticated}=useAuth()
+  const {username,token,isAuthenticated,logout}=useAuth()
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
   const navigate=useNavigate()
  
@@ -32,6 +32,11 @@ function Navbar() {
   };
   const handelloginPage=()=>{
     navigate('/login')
+   }
+   const HandelLogout=()=>{
+    logout();
+    navigate('/');
+    handleCloseUserMenu
    }
 
 console.log("From Navbar ",{username,token})
@@ -88,8 +93,8 @@ console.log("From Navbar ",{username,token})
                 <MenuItem  onClick={handleCloseUserMenu}>
                   <Typography sx={{ textAlign: 'center' }}>My Order</Typography>
                 </MenuItem>
-                <MenuItem  onClick={handleCloseUserMenu}>
-                  <Typography sx={{ textAlign: 'center' }}>Logout</Typography>
+                <MenuItem  onClick={HandelLogout}>
+                  <Typography sx={{ textAlign: 'center' }} >Logout</Typography>
                 </MenuItem>
             </Menu>
          </>:(<Button variant="contained" color="success" onClick={handelloginPage}>Login</Button>
