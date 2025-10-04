@@ -1,3 +1,4 @@
+import { populate } from "dotenv";
 import { cartModel, type ICartItem } from "../models/cartModel.js";
 import { orderModel, type IOrderItem } from "../models/orderModel.js";
 import productModel from "../models/productModel.js";
@@ -15,10 +16,15 @@ const createCartForUser=async ({userId}:createCartForUser)=>{
 }
 export interface getActiveCartForUser{
   userId:string;
-
+  populateProduct?:boolean;
 }
-export const getActiveCartForUser=async({userId}:getActiveCartForUser)=>{
- let cart =await cartModel.findOne({userId,status:"active"})
+export const getActiveCartForUser=async({userId,populateProduct}:getActiveCartForUser)=>{
+  let cart ;
+  if(populateProduct){
+     cart= await cartModel.findOne({userId,status:"active"}).populate("items.product")
+  }else{
+    cart= await cartModel.findOne({userId,status:"active"})
+  }
  if(!cart){
     cart=await createCartForUser({userId})
  }
@@ -46,8 +52,8 @@ if(product.stock<parseInt(quantity)){
 }
 cart.items.push({product:productId,unitPrice:product.price,quantity:parseInt(quantity)})
 cart.totalAmount+=product.price*parseInt(quantity)
-const updatedCart=await cart.save()
-return {data:updatedCart,statusCode:200}
+await cart.save()
+return {data:await getActiveCartForUser({userId,populateProduct:true}),statusCode:200}
 }
 interface updateItemInCart{
   productId:any;
@@ -76,8 +82,8 @@ if(product.stock<parseInt(quantity)){
   },0)
   total+=existsInCart.quantity*existsInCart.unitPrice;
   cart.totalAmount=total;
-  const updatedCart=await cart.save()
-return {data:updatedCart,statusCode:200};
+ await cart.save()
+ return {data:await getActiveCartForUser({userId,populateProduct:true}),statusCode:200}
 }
 interface deleteItemInCart{
   productId:any;
@@ -97,8 +103,8 @@ export const deleteItemInCart=async({productId,userId}:deleteItemInCart)=>{
   },0)
   cart.items=otherCartItems
   cart.totalAmount=total;
-  const updatedCart=await cart.save()
-  return {data:updatedCart,statusCode:200};
+   await cart.save()
+  return {data:await getActiveCartForUser({userId,populateProduct:true}),statusCode:200}
 }
 interface clearItemInCart{
   userId:string
