@@ -1,4 +1,4 @@
-import { useState, type FC, type PropsWithChildren } from "react";
+import { useEffect, useState, type FC, type PropsWithChildren } from "react";
 import { CartContext } from "./CartContext";
 import type { CartItem } from "../../types/CartItem";
 import baseUrl from "../../constants/baseUrl";
@@ -9,6 +9,32 @@ export const CartProvider: FC<PropsWithChildren> = ({ children }) => {
     const [cartItems, setCartItems] = useState<CartItem[]>([])
     const [totalAmount, setTotalAmount] = useState<number>(0);
     const [error, setError] = useState('');
+    
+    useEffect(()=>{
+        if(!token){
+            setError("You must be Loggin")
+            return 
+        }
+        const fetchCart=async()=>{
+
+            try{
+            const response=await fetch(`${baseUrl}/cart`,{
+               headers:{
+                'Authorization':`Bearer ${token}`
+               }
+            })
+            const cart=await response.json()
+            
+            const cartItemMapped = cart.items.map(({ product }:{product:any}) => ({ productId: product._id, title: product.title, image: product.image, unitPrice: product.unitPrice }))
+            setCartItems([...cartItemMapped])
+            setTotalAmount(cart.totalAmount)
+            setCartItems(cartItemMapped)
+        }catch(error){
+            setError("Failed to fetch user CART")
+        }
+        };
+        fetchCart()
+    },[token])
 
     const addItemToCart = async (productId: string) => {
         try {

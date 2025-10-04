@@ -16,10 +16,12 @@ import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom';
 import ShoppingCart from "@mui/icons-material/ShoppingCart"
 import Badge from '@mui/material/Badge';
+import { useCart } from '../context/cart/CartContext';
 
 
 function Navbar() {
   const {username,token,isAuthenticated,logout}=useAuth()
+  const {cartItems}=useCart();
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
   const navigate=useNavigate()
  
@@ -48,6 +50,7 @@ function Navbar() {
       <Container maxWidth="xl">
         <Toolbar disableGutters>
             <Box sx={{display:'flex',flexDirection:"row",justifyContent:"space-between",width:"100%",alignItems:"center"}}>
+              <Button variant='text'sx={{color:'white'}} onClick={()=>navigate('/')}>
             <Box sx={{display:"flex",flexDirection:"row",alignItems:"center"}}>
           <AdbIcon sx={{ display: 'flex', mr: 1 }} />
           <Typography
@@ -66,9 +69,10 @@ function Navbar() {
 
           </Box>
           
+          </Button>
           <Box display="flex" flexDirection="row" alignItems="center" justifyContent="center" gap={4}>
           <IconButton aria-label="cart">
-           <Badge badgeContent={4} color="secondary" onClick={handelOpenCartPage}>
+           <Badge badgeContent={cartItems.length} color="secondary" onClick={handelOpenCartPage}>
               <ShoppingCart sx={{color:"#ffffff"}} />
            </Badge>
           </IconButton>

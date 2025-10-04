@@ -12,28 +12,7 @@ const CartPage=()=>{
     const [error,SetError]=useState("")
     const{token} =useAuth();
     const {cartItems,totalAmount}= useCart()
-    useEffect(()=>{
-        if(!token){
-            SetError("You must be Loggin")
-            return 
-        }
-        const fetchCart=async()=>{
-
-            try{
-            const response=await fetch(`${baseUrl}/cart`,{
-               headers:{
-                'Authorization':`Bearer ${token}`
-               }
-            })
-            const data=await response.json()
-            setCart(data)
-        }catch(error){
-            SetError("Failed to fetch user CART")
-        }
-        };
-        fetchCart()
-    },[token])
-
+   
     return  (
     <Container sx={{ mt: 2 ,ml:0}}>  
      <Typography variant="h4">My Cart</Typography>   
