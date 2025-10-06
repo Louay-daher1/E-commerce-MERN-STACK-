@@ -7,7 +7,16 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import Button from '@mui/material/Button';
 const CartPage=()=>{
 
-    const {cartItems,totalAmount}= useCart()
+    const {cartItems,totalAmount,updateItemInCart,removeItemFromCart}= useCart()
+   const handelQuantity=(productId:string,quantity:number)=>{
+    if(quantity<1){
+        return;
+    }
+    updateItemInCart(productId,quantity)
+   }
+   const handleRemoveItem=(productId:string)=>{
+    removeItemFromCart(productId)
+   }
     return  (
     <Container fixed sx={{ mt: 2}}>  
      <Typography variant="h4">My Cart</Typography>   
@@ -20,7 +29,7 @@ const CartPage=()=>{
            <Box >
           <Typography variant="h6"> {item.title}</Typography>
           <Typography> {item.quantity}x{item.unitPrice} $</Typography>
-          <Button sx={{background:'red' ,color:'white'}}>Remove Item</Button>
+          <Button sx={{background:'red' ,color:'white'}} onClick={()=>handleRemoveItem(item.productId)}>Remove Item</Button>
           </Box>
           </Box>
           <ButtonGroup
@@ -28,8 +37,8 @@ const CartPage=()=>{
                 variant="contained"
                 aria-label="Disabled button group"
                 >
-                <Button >-</Button>
-                <Button >+</Button>
+                <Button onClick={()=>handelQuantity(item.productId,item.quantity-1)}>-</Button>
+                <Button onClick={()=>handelQuantity(item.productId,item.quantity+1)}>+</Button>
             </ButtonGroup>
             
         </Box>                        

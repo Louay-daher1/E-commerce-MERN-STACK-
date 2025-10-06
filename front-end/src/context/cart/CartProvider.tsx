@@ -65,9 +65,62 @@ export const CartProvider: FC<PropsWithChildren> = ({ children }) => {
             console.error(error)
         }
     }
-
+    const updateItemInCart = async (productId: string,quantity:number) => {
+        try {
+            const response = await fetch(`${baseUrl}/cart/items`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization':`Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    productId,
+                    quantity: quantity
+                })
+            });
+            if (!response.ok) {
+                setError('Failed to update quantity to product in the Cart')
+            }
+            const cart = await response.json();
+            if (!cart) {
+                setError("Failed to parse cart data")
+            }
+            const cartItemMapped = cart.items.map(({ product,quantity,unitPrice }:{product:any,quantity:number,unitPrice:number}) => ({ productId: product._id, title: product.title, image: product.image ,quantity,unitPrice}))
+            setCartItems([...cartItemMapped])
+            setTotalAmount(cart.totalAmount)
+        } catch (error) {
+            console.error(error)
+        }
+    }
+    const removeItemFromCart = async (productId: string) => {
+        try {
+            const response = await fetch(`${baseUrl}/cart/items/${productId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization':`Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    productId,
+                })
+            });
+            if (!response.ok) {
+                setError('Failed to delete product from the Cart')
+            }
+            const cart = await response.json();
+            if (!cart) {
+                setError("Failed to parse cart data")
+            }
+            const cartItemMapped = cart.items.map(({ product,quantity,unitPrice }:{product:any,quantity:number,unitPrice:number}) => ({ productId: product._id, title: product.title, image: product.image ,quantity,unitPrice}))
+            setCartItems([...cartItemMapped])
+            setTotalAmount(cart.totalAmount)
+        } catch (error) {
+            console.error(error)
+        }
+    }
+    
     return (
-        <CartContext.Provider value={{ cartItems, totalAmount, addItemToCart }}>
+        <CartContext.Provider value={{ cartItems, totalAmount, addItemToCart ,updateItemInCart,removeItemFromCart}}>
             {children}
         </CartContext.Provider>
     )
