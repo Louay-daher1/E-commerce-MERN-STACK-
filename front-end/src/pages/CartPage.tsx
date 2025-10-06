@@ -1,25 +1,43 @@
 import Typography  from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { useEffect, useState } from "react";
-import baseUrl from "../constants/baseUrl";
-import { useAuth } from "../context/auth/AuthContext";
+
 import { useCart } from "../context/cart/CartContext";
 import Box from "@mui/material/Box";
-
+import ButtonGroup from '@mui/material/ButtonGroup';
+import Button from '@mui/material/Button';
 const CartPage=()=>{
 
-    const [cart,setCart]=useState();
-    const [error,SetError]=useState("")
-    const{token} =useAuth();
     const {cartItems,totalAmount}= useCart()
-   
     return  (
-    <Container sx={{ mt: 2 ,ml:0}}>  
+    <Container fixed sx={{ mt: 2}}>  
      <Typography variant="h4">My Cart</Typography>   
+     <Box gap={4} display='flex' flexDirection='column'>
      {cartItems.map((item)=>
-          <Box>{item.title}</Box>                        
-
+ 
+        <Box display='flex' flexDirection='row' justifyContent='space-between' alignItems='center'sx={{border:1,borderColor:"#f1f1f1",borderRadius:5,padding:2}}>
+            <Box display='flex' flexDirection='row' alignItems="center" gap={3}>
+           <img src={item.image} width={50}/> 
+           <Box >
+          <Typography variant="h6"> {item.title}</Typography>
+          <Typography> {item.quantity}x{item.unitPrice} $</Typography>
+          <Button sx={{background:'red' ,color:'white'}}>Remove Item</Button>
+          </Box>
+          </Box>
+          <ButtonGroup
+                disableElevation
+                variant="contained"
+                aria-label="Disabled button group"
+                >
+                <Button >-</Button>
+                <Button >+</Button>
+            </ButtonGroup>
+            
+        </Box>                        
     )}
+     <Box>
+      <Typography variant="h4"> Total Amount:{totalAmount}$</Typography> 
+     </Box>
+    </Box>
     </Container>
     )
 }

@@ -24,8 +24,10 @@ export const CartProvider: FC<PropsWithChildren> = ({ children }) => {
                }
             })
             const cart=await response.json()
-            
-            const cartItemMapped = cart.items.map(({ product }:{product:any}) => ({ productId: product._id, title: product.title, image: product.image, unitPrice: product.unitPrice }))
+           
+
+            const cartItemMapped = cart.items.map(({ product,quantity,unitPrice }:{product:any,quantity:number,unitPrice:number}) => ({ productId: product._id, title: product.title, image: product.image ,quantity,unitPrice}))
+            console.log(cartItemMapped)
             setCartItems([...cartItemMapped])
             setTotalAmount(cart.totalAmount)
             setCartItems(cartItemMapped)
@@ -56,7 +58,7 @@ export const CartProvider: FC<PropsWithChildren> = ({ children }) => {
             if (!cart) {
                 setError("Failed to parse cart data")
             }
-            const cartItemMapped = cart.items.map(({ product }:{product:any}) => ({ productId: product._id, title: product.title, image: product.image, unitPrice: product.unitPrice }))
+            const cartItemMapped = cart.items.map(({ product,quantity,unitPrice }:{product:any,quantity:number,unitPrice:number}) => ({ productId: product._id, title: product.title, image: product.image ,quantity,unitPrice}))
             setCartItems([...cartItemMapped])
             setTotalAmount(cart.totalAmount)
         } catch (error) {
