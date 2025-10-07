@@ -118,9 +118,26 @@ export const CartProvider: FC<PropsWithChildren> = ({ children }) => {
             console.error(error)
         }
     }
-    
+    const clearAllItemFromCart=async()=>{
+        try {
+            const response = await fetch(`${baseUrl}/cart`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization':`Bearer ${token}`
+                }
+            });
+            if (!response.ok) {
+                setError('Failed to update quantity to product in the Cart')
+            }
+            setCartItems([])
+            setTotalAmount(0)
+        } catch (error) {
+            console.error(error)
+        }
+    }
     return (
-        <CartContext.Provider value={{ cartItems, totalAmount, addItemToCart ,updateItemInCart,removeItemFromCart}}>
+        <CartContext.Provider value={{ cartItems, totalAmount, addItemToCart ,updateItemInCart,removeItemFromCart,clearAllItemFromCart}}>
             {children}
         </CartContext.Provider>
     )

@@ -113,8 +113,8 @@ export const clearItemInCart=async({userId}:clearItemInCart)=>{
   const cart =await getActiveCartForUser({userId});
   cart.items=[];
   cart.totalAmount=0;
-  const updatedCart=await cart.save();
-  return{data:updatedCart,statusCode:200}
+  await cart.save();
+  return {data:await getActiveCartForUser({userId,populateProduct:true}),statusCode:200}
 }
 interface checkout{
   userId:string
