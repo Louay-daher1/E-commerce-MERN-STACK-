@@ -5,6 +5,7 @@ import { useCart } from "../context/cart/CartContext";
 import Box from "@mui/material/Box";
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Button from '@mui/material/Button';
+import { useNavigate } from "react-router-dom";
 const CartPage=()=>{
 
     const {cartItems,totalAmount,updateItemInCart,removeItemFromCart,clearAllItemFromCart}= useCart()
@@ -19,6 +20,11 @@ const CartPage=()=>{
    }
    const clearAllItemFromCarts=()=>{
     clearAllItemFromCart();
+   }
+   const navigate=useNavigate()
+
+   const handelCheckout=()=>{
+    navigate('/checkout')
    }
 const HandelcART = () => (
  <Box gap={4} display='flex' flexDirection='column'>
@@ -42,8 +48,9 @@ const HandelcART = () => (
             </ButtonGroup>
         </Box>
      ))}
-      <Box>
+      <Box display="flex" flexDirection="row" justifyContent='space-between' alignItems='center'>
         <Typography variant="h4"> Total Amount:{totalAmount}$</Typography>
+        <Button variant="contained"onClick={handelCheckout}>GO TO CHECKOUT</Button>
       </Box>
  </Box>
 )
