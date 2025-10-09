@@ -27,7 +27,7 @@ export const CartProvider: FC<PropsWithChildren> = ({ children }) => {
            
 
             const cartItemMapped = cart.items.map(({ product,quantity,unitPrice }:{product:any,quantity:number,unitPrice:number}) => ({ productId: product._id, title: product.title, image: product.image ,quantity,unitPrice}))
-            console.log(cartItemMapped)
+           
             setCartItems([...cartItemMapped])
             setTotalAmount(cart.totalAmount)
             setCartItems(cartItemMapped)

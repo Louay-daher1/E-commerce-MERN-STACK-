@@ -1,6 +1,7 @@
 import { userModel } from "../models/userModel.js";
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
+import { orderModel } from "../models/orderModel.js";
 
 interface registerUser{
     firstName:string;
@@ -34,7 +35,19 @@ const loginUser=async({email,password}:loginUser)=>{
     }
     return {data:"Incorrect email or password",statusCode:400}
 }
+interface GetMyOrders{
+    userId:string
+}
+ 
+const getMyOrders=async({userId}:GetMyOrders)=>{
+    try{
+        console.log(userId)
+     return {data:await orderModel.find({userId}),statusCode:200};
+    }catch(err){
+     throw err;
+    }
+}
 const generateJwt=(data:any)=>{
 return jwt.sign(data,process.env.JWT_SECRET||'') // data,secret key when i get the jwt i encode it with the secret key to assur this is my secret key and i can add {expiresIn:'24h'}to expire this token
 }
-export { registerUser, loginUser };
+export { registerUser, loginUser,getMyOrders };

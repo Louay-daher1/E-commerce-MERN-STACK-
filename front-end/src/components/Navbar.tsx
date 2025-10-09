@@ -20,11 +20,11 @@ import { useCart } from '../context/cart/CartContext';
 
 
 function Navbar() {
-  const {username,token,isAuthenticated,logout}=useAuth()
-  const {cartItems}=useCart();
+  const { username, token, isAuthenticated, logout } = useAuth()
+  const { cartItems } = useCart();
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
-  const navigate=useNavigate()
- 
+  const navigate = useNavigate()
+
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -33,87 +33,89 @@ function Navbar() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-  const handelloginPage=()=>{
+  const handelloginPage = () => {
     navigate('/login')
-   }
-   const HandelLogout=()=>{
+  }
+  const HandelLogout = () => {
     logout();
     navigate('/');
     handleCloseUserMenu
-   }
-   const handelOpenCartPage=()=>{
-     navigate('/cart')
-   }
-
+  }
+  const handelOpenCartPage = () => {
+    navigate('/cart')
+  }
+  const handleMyOrders = () => {
+    navigate('/my-orders')
+  }
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-            <Box sx={{display:'flex',flexDirection:"row",justifyContent:"space-between",width:"100%",alignItems:"center"}}>
-              <Button variant='text'sx={{color:'white'}} onClick={()=>navigate('/')}>
-            <Box sx={{display:"flex",flexDirection:"row",alignItems:"center"}}>
-          <AdbIcon sx={{ display: 'flex', mr: 1 }} />
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            sx={{
-              mr: 2,
-              display: { xs: 'none', md: 'flex' },
-              fontFamily:  'monospace',
-              fontWeight: 700,
-            }}
-          >
-            Tech Hub 
-          </Typography>
+          <Box sx={{ display: 'flex', flexDirection: "row", justifyContent: "space-between", width: "100%", alignItems: "center" }}>
+            <Button variant='text' sx={{ color: 'white' }} onClick={() => navigate('/')}>
+              <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+                <AdbIcon sx={{ display: 'flex', mr: 1 }} />
+                <Typography
+                  variant="h6"
+                  noWrap
+                  component="a"
+                  sx={{
+                    mr: 2,
+                    display: { xs: 'none', md: 'flex' },
+                    fontFamily: 'monospace',
+                    fontWeight: 700,
+                  }}
+                >
+                  Tech Hub
+                </Typography>
 
-          </Box>
-          
-          </Button>
-          <Box display="flex" flexDirection="row" alignItems="center" justifyContent="center" gap={4}>
-          <IconButton aria-label="cart">
-           <Badge badgeContent={cartItems.length} color="secondary" onClick={handelOpenCartPage}>
-              <ShoppingCart sx={{color:"#ffffff"}} />
-           </Badge>
-          </IconButton>
-         { isAuthenticated?<>
-          <Tooltip title="Open settings">
-              <Stack direction="row" alignItems='center' spacing={2}>
-                <Typography>{username}</Typography>
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt={username||''} src="/static/images/avatar/2.jpg" />
-                </IconButton>
-              </Stack>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-            
-                <MenuItem  onClick={handleCloseUserMenu}>
-                  <Typography sx={{ textAlign: 'center' }}>My Order</Typography>
-                </MenuItem>
-                <MenuItem  onClick={HandelLogout}>
-                  <Typography sx={{ textAlign: 'center' }} >Logout</Typography>
-                </MenuItem>
-            </Menu>
-         </>:(<Button variant="contained" color="success" onClick={handelloginPage}>Login</Button>
+              </Box>
 
-         )}
-          
-          </Box>
+            </Button>
+            <Box display="flex" flexDirection="row" alignItems="center" justifyContent="center" gap={4}>
+              <IconButton aria-label="cart">
+                <Badge badgeContent={cartItems.length} color="secondary" onClick={handelOpenCartPage}>
+                  <ShoppingCart sx={{ color: "#ffffff" }} />
+                </Badge>
+              </IconButton>
+              {isAuthenticated ? <>
+                <Tooltip title="Open settings">
+                  <Stack direction="row" alignItems='center' spacing={2}>
+                    <Typography>{username}</Typography>
+                    <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                      <Avatar alt={username || ''} src="/static/images/avatar/2.jpg" />
+                    </IconButton>
+                  </Stack>
+                </Tooltip>
+                <Menu
+                  sx={{ mt: '45px' }}
+                  id="menu-appbar"
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
+                >
+
+                  <MenuItem onClick={handleMyOrders}>
+                    <Typography sx={{ textAlign: 'center' }}>My Order</Typography>
+                  </MenuItem>
+                  <MenuItem onClick={HandelLogout}>
+                    <Typography sx={{ textAlign: 'center' }} >Logout</Typography>
+                  </MenuItem>
+                </Menu>
+              </> : (<Button variant="contained" color="success" onClick={handelloginPage}>Login</Button>
+
+              )}
+
+            </Box>
           </Box>
         </Toolbar>
       </Container>
