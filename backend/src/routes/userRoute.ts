@@ -7,8 +7,8 @@ import validateJWT from "../middlewares/validateJWT.js";
 const router = express.Router()
 router.post('/register', async (req, res) => {
     try {
-        const { firstName, lastName, email, password } = req.body;
-        const { data, statusCode } = await registerUser({ firstName, lastName, email, password })
+        const { firstName, lastName, email, password,isAdmin } = req.body;
+        const { data, statusCode } = await registerUser({ firstName, lastName, email, password,isAdmin})
         res.status(statusCode).json(data);
     } catch (err) {
         res.status(500).send("Somthing went wrong")

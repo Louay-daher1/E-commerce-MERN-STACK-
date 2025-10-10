@@ -8,17 +8,18 @@ interface registerUser{
     lastName:string;
     email:string;
     password:string;
+    isAdmin:boolean;
 }
-const registerUser=async({firstName,lastName,email,password}:registerUser)=>{
+const registerUser=async({firstName,lastName,email,password,isAdmin}:registerUser)=>{
  const findUser=await userModel.findOne({email})
  if (findUser){
 
     return {data:"User already Exist",statusCode:400}
  }
  const hashedPassword=await bcrypt.hash(password,10)
- const newUser=new userModel({firstName,lastName,email,password:hashedPassword})
+ const newUser=new userModel({firstName,lastName,email,password:hashedPassword,isAdmin:false})
  await newUser.save()
- return {data:generateJwt({firstName,lastName,email}),statusCode:200}
+ return {data:generateJwt({firstName,lastName,email,isAdmin}),statusCode:200}
 }
 interface loginUser{
     email:string;
